@@ -22,13 +22,10 @@
 package org.dockfx.demo;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -118,12 +115,7 @@ public class DockFX extends Application {
       @Override
       public void handle(ActionEvent event) {
         if(dirExist(getUserDataDirectory()))
-          try {
-            dockPane.storePreference(new File(getUserDataDirectory() + "dock.pref"));
-          }
-          catch (FileNotFoundException ex) {
-              Logger.getLogger(DockFX.class.getName()).log(Level.SEVERE, null, ex);
-          }
+          dockPane.storePreference(getUserDataDirectory() + "dock.pref");
       }
     });
 
@@ -131,11 +123,7 @@ public class DockFX extends Application {
     restoreMenuItem.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-          try {
-              dockPane.loadPreference(new File(getUserDataDirectory() + "dock.pref"));
-          }catch (FileNotFoundException ex) {
-              Logger.getLogger(DockFX.class.getName()).log(Level.SEVERE, null, ex);
-          }
+        dockPane.loadPreference(getUserDataDirectory() + "dock.pref");
       }
     });
 

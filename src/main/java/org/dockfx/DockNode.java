@@ -915,10 +915,7 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
      * dock pane.
      */
     public void close() {
-        
         this.closedProperty.set(true);
-        this.getDockPane().getClosedNodes().add(this);
-        
         if (isFloating()) {
             setFloating(false);
         } else if (isDocked()) {
