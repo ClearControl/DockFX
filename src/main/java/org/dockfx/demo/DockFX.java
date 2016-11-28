@@ -22,10 +22,13 @@
 package org.dockfx.demo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -50,8 +53,10 @@ import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class DockFX extends Application {
 
@@ -113,7 +118,12 @@ public class DockFX extends Application {
       @Override
       public void handle(ActionEvent event) {
         if(dirExist(getUserDataDirectory()))
-          dockPane.storePreference(getUserDataDirectory() + "dock.pref");
+          try {
+            dockPane.storePreference(new File(getUserDataDirectory() + "dock.pref"));
+          }
+          catch (FileNotFoundException ex) {
+              Logger.getLogger(DockFX.class.getName()).log(Level.SEVERE, null, ex);
+          }
       }
     });
 
@@ -121,7 +131,11 @@ public class DockFX extends Application {
     restoreMenuItem.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        dockPane.loadPreference(getUserDataDirectory() + "dock.pref");
+          try {
+              dockPane.loadPreference(new File(getUserDataDirectory() + "dock.pref"));
+          }catch (FileNotFoundException ex) {
+              Logger.getLogger(DockFX.class.getName()).log(Level.SEVERE, null, ex);
+          }
       }
     });
 
@@ -138,8 +152,13 @@ public class DockFX extends Application {
     
     primaryStage.setScene(new Scene(mainBorderPane, 800, 500));
     primaryStage.sizeToScene();
-
+    
     primaryStage.show();
+    
+    //Stage s = new Stage(StageStyle.DECORATED);
+    //s.initOwner(primaryStage);
+    
+    //s.show();
 
     // can be created and docked before or after the scene is created
     // and the stage is shown
