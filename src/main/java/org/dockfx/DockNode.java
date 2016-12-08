@@ -47,6 +47,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import org.dockfx.pane.DockNodeTab;
 
 /**
@@ -351,10 +352,17 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
       }
 
       stage = new Stage();
+      
       stage.titleProperty().bind(titleProperty);
       if (dockPane != null && dockPane.getScene() != null
           && dockPane.getScene().getWindow() != null) {
-        //stage.initOwner(dockPane.getScene().getWindow());
+        
+        dockPane.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                stage.close();
+            }
+        });
       }
 
       stage.initStyle(stageStyle);
@@ -430,7 +438,6 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
       // without this it subtracts the native border sizes from the scene
       // size
       stage.sizeToScene();
-
       stage.show();
     } else if (!floating && this.isFloating()) {
       this.floatingProperty.set(floating);
