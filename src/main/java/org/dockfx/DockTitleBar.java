@@ -57,15 +57,15 @@ public class DockTitleBar extends HBox implements EventHandler<MouseEvent> {
   /**
    * The DockNode this node is a title bar for.
    */
-  private DockNode dockNode;
+  private final DockNode dockNode;
   /**
    * The label node used for captioning and the graphic.
    */
-  private Label label;
+  private final Label label;
   /**
    * State manipulation buttons including close, maximize, detach, and restore.
    */
-  private Button closeButton, stateButton;
+  private final Button closeButton, stateButton, minimizeButton;
 
   /**
    * Creates a default DockTitleBar with captions and dragging behavior.
@@ -99,6 +99,25 @@ public class DockTitleBar extends HBox implements EventHandler<MouseEvent> {
         dockNode.close();
       }
     });
+    
+    minimizeButton = new Button();
+    minimizeButton.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            dockNode.setMinimized(true);
+        }
+    });
+    
+    this.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
+    this.addEventHandler(MouseEvent.DRAG_DETECTED, this);
+    this.addEventHandler(MouseEvent.MOUSE_DRAGGED, this);
+    this.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
+    
+    label.getStyleClass().add("dock-title-label");
+    closeButton.getStyleClass().add("dock-close-button");
+    stateButton.getStyleClass().add("dock-state-button");
+    minimizeButton.getStyleClass().add("dock-minimize-button");
+    this.getStyleClass().add("dock-title-bar");
 
     // create a pane that will stretch to make the buttons right aligned
     Pane fillPane = new Pane();
@@ -120,17 +139,8 @@ public class DockTitleBar extends HBox implements EventHandler<MouseEvent> {
 		  }
 	  } );
 
-	  getChildren().addAll(label, fillPane, stateButton, closeButton);
+	  super.getChildren().addAll(label, fillPane, minimizeButton, stateButton, closeButton);
 
-    this.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
-    this.addEventHandler(MouseEvent.DRAG_DETECTED, this);
-    this.addEventHandler(MouseEvent.MOUSE_DRAGGED, this);
-    this.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
-
-    label.getStyleClass().add("dock-title-label");
-    closeButton.getStyleClass().add("dock-close-button");
-    stateButton.getStyleClass().add("dock-state-button");
-    this.getStyleClass().add("dock-title-bar");
 
   }
 
@@ -170,6 +180,15 @@ public class DockTitleBar extends HBox implements EventHandler<MouseEvent> {
    */
   public final Button getStateButton() {
     return stateButton;
+  }
+  
+  /**
+   * The button used for minimizing this title bar and its associated dock node.
+   *
+   * @return The button used for minimizing this title bar and its associated dock node.
+   */
+  public final Button getMinimizeButton() {
+      return minimizeButton;
   }
 
   /**

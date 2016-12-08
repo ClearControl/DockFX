@@ -60,7 +60,7 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
   /**
    * The style this dock node should use on its stage when set to floating.
    */
-  private StageStyle stageStyle = StageStyle.TRANSPARENT;
+  private StageStyle stageStyle = StageStyle.UNDECORATED;
   /**
    * The stage that this dock node is currently using when floating.
    */
@@ -88,6 +88,14 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
    * View controller of node inside this DockNode
    */
   private DockFXViewController viewController;
+  
+  /**
+   * Keep window state before its maximizing.
+   */
+  private double widthBeforeMaximizing;
+  private double heightBeforeMaximizing;
+  private double xPosBeforeMaximizing;
+  private double yPosBeforeMaximizing;
 
   /**
    * CSS pseudo class selector representing whether this node is currently floating.
@@ -115,8 +123,18 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
       if (borderPane != null) {
         borderPane.pseudoClassStateChanged(MAXIMIZED_PSEUDO_CLASS, get());
       }
-
-      stage.setMaximized(get());
+      
+      if (!get()) {
+          stage.setX(xPosBeforeMaximizing);
+          stage.setY(yPosBeforeMaximizing);
+          stage.setWidth(widthBeforeMaximizing);
+          stage.setHeight(heightBeforeMaximizing);
+      }else{
+          widthBeforeMaximizing = stage.getWidth();
+          heightBeforeMaximizing = stage.getHeight();
+          xPosBeforeMaximizing = stage.getX();
+          yPosBeforeMaximizing = stage.getY();
+      }
 
       // TODO: This is a work around to fill the screen bounds and not overlap the task bar when 
       // the window is undecorated as in Visual Studio. A similar work around needs applied for 
@@ -341,7 +359,7 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
       stage.titleProperty().bind(titleProperty);
       if (dockPane != null && dockPane.getScene() != null
           && dockPane.getScene().getWindow() != null) {
-        stage.initOwner(dockPane.getScene().getWindow());
+        //stage.initOwner(dockPane.getScene().getWindow());
       }
 
       stage.initStyle(stageStyle);
@@ -671,6 +689,56 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
 
   public final void setClosable(boolean closable) {
     this.closableProperty.set(closable);
+  }
+  
+  private BooleanProperty minimizedProperty = new SimpleBooleanProperty(false) {
+      @Override
+      public String getName() {
+        return "minimized";
+      }
+  };
+  
+  public final boolean isMinimized(){
+      return minimizedProperty.get();
+  }
+  
+  public final void setMinimized(boolean minimized) {
+      
+      if(minimized){
+          stage.setIconified(true);
+      }
+      
+      this.minimizedProperty.set(minimized);
+  }
+  
+  /**
+   * Boolean property maintaining whether this node is minimizable.
+   * @return 
+   */
+  public final BooleanProperty minimizableProperty() {
+      return minimizableProperty;
+  }
+  
+  private BooleanProperty minimizableProperty = new SimpleBooleanProperty(true){
+      @Override
+      public String getName() {
+          return "minimizable";
+      }
+  };
+  
+  public final boolean isMinimizable() {
+      return minimizableProperty.get();
+  }
+  
+  public final void setMinimizable(boolean minimizable) {
+      
+      if (minimizable && !this.isMinimizable()) {
+          dockTitleBar.getChildren().add(2, dockTitleBar.getMinimizeButton());
+      } else if (!minimizable && this.isMinimizable()) {
+          dockTitleBar.getChildren().remove(dockTitleBar.getMinimizeButton());
+      }
+      
+      this.minimizableProperty.set(minimizable);
   }
 
   /**
