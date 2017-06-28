@@ -1,6 +1,6 @@
 package org.dockfx.pane;
 
-import org.dockfx.DockNode;
+import org.dockfx.dock.DockNode;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Tab;

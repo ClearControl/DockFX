@@ -18,7 +18,7 @@
  *          program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package org.dockfx;
+package org.dockfx.dock;
 
 /**
  * DockPos
@@ -26,29 +26,29 @@ package org.dockfx;
  * @since DockFX 0.1
  */
 public enum DockPos {
-  /**
-   * Dock to the center by stacking inside a TabPane. This should be considered the equivalent of
-   * null.
-   */
-  CENTER,
+	/**
+	 * Dock to the center by stacking inside a TabPane. This should be considered
+	 * the equivalent of null.
+	 */
+	CENTER,
 
-  /**
-   * Dock to the left using a splitter.
-   */
-  LEFT,
+	/**
+	 * Dock to the left using a splitter.
+	 */
+	LEFT,
 
-  /**
-   * Dock to the right using a splitter.
-   */
-  RIGHT,
+	/**
+	 * Dock to the right using a splitter.
+	 */
+	RIGHT,
 
-  /**
-   * Dock to the top using a splitter.
-   */
-  TOP,
+	/**
+	 * Dock to the top using a splitter.
+	 */
+	TOP,
 
-  /**
-   * Dock to the bottom using a splitter.
-   */
-  BOTTOM;
+	/**
+	 * Dock to the bottom using a splitter.
+	 */
+	BOTTOM;
 }

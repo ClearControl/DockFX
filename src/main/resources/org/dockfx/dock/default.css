@@ -68,7 +68,7 @@
 
 /* Set the icons for the indicator buttons here. */
 .dock-center {
-  -fx-graphic: url(center.png);
+  -fx-graphic: url("org/dockfx/dock/center.png");
 }
 
 .dock-top {
@@ -84,7 +84,7 @@
 }
 
 .dock-left {
-  -fx-graphic: url(left.png);
+  -fx-graphic: url("left.png");
 }
 
 .dock-top-root {
@@ -160,7 +160,7 @@
 
 /* Set the icons for the dock title bar's buttons here. */
 .dock-state-button {
-  -fx-graphic: url(restore.png);
+  -fx-graphic: url("restore.png");
 }
 
 .dock-node:floating .dock-state-button {
@@ -172,7 +172,7 @@
 }
 
 .dock-close-button {
-  -fx-graphic: url(close.png);
+  -fx-graphic: url("close.png");
 }
 
 .dock-minimize-button {

@@ -20,7 +20,7 @@
  */
 package org.dockfx.viewControllers;
 
-import org.dockfx.DockTitleBar;
+import org.dockfx.dock.DockTitleBar;
 
 /**
  * Abstract base class for View Controllers

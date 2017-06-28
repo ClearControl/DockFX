@@ -21,40 +21,23 @@
 
 package org.dockfx.demo;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Random;
-
-import org.dockfx.dock.DockNode;
-import org.dockfx.dock.DockPane;
-import org.dockfx.dock.DockPos;
-
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.beans.value.*;
+import javafx.event.*;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.*;
+import javafx.scene.image.*;
+import javafx.scene.layout.*;
 import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
+import org.dockfx.dock.*;
 import org.dockfx.persist.*;
 
-public class DockFX extends Application {
+import java.io.*;
+import java.nio.file.*;
+import java.util.Random;
+
+public class DockFXPersistence extends Application {
 
   public static void main(String[] args) {
     launch(args);
@@ -88,7 +71,7 @@ public class DockFX extends Application {
         new TableColumn<String, String>("B"), new TableColumn<String, String>("C"));
 
     // load an image to caption the dock nodes
-    Image dockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
+    Image dockImage = new Image(DockFXPersistence.class.getResource("docknode.png").toExternalForm());
 
     // create and dock some prototype dock nodes to the middle of the dock pane
     // the preferred sizes are used to specify the relative size of the node
@@ -143,7 +126,7 @@ public class DockFX extends Application {
     mainBorderPane.setCenter(dockPane);
     
     // show that overlays are relative to the docking area
-    mainBorderPane.setLeft(new AnchorPane(generateRandomTree()));
+//    mainBorderPane.setLeft(new AnchorPane(generateRandomTree()));
     
     primaryStage.setScene(new Scene(mainBorderPane, 800, 500));
     primaryStage.sizeToScene();

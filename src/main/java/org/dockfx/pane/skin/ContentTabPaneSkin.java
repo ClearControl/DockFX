@@ -1,8 +1,23 @@
 
 package org.dockfx.pane.skin;
 
+import static com.sun.javafx.scene.control.skin.resources.ControlResources.getString;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import org.dockfx.pane.DockNodeTab;
+
+import com.sun.javafx.css.converters.EnumConverter;
+import com.sun.javafx.scene.control.MultiplePropertyChangeListenerHandler;
+import com.sun.javafx.scene.control.behavior.TabPaneBehavior;
 import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
+import com.sun.javafx.scene.traversal.Direction;
+import com.sun.javafx.scene.traversal.TraversalEngine;
 import com.sun.javafx.util.Utils;
+
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -57,21 +72,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
-import com.sun.javafx.css.converters.EnumConverter;
-import com.sun.javafx.scene.control.MultiplePropertyChangeListenerHandler;
-import com.sun.javafx.scene.control.behavior.TabPaneBehavior;
-import com.sun.javafx.scene.traversal.Direction;
-import com.sun.javafx.scene.traversal.TraversalEngine;
-
-import org.dockfx.pane.DockNodeTab;
-
-import static com.sun.javafx.scene.control.skin.resources.ControlResources.getString;
 
 /**
  * This class source is copied from com.sun.javafx.scene.control.skin.TabPaneSkin in jfxrt.jar 1.8 version

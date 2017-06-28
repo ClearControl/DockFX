@@ -1,19 +1,18 @@
 package org.dockfx.pane;
 
 import java.util.Comparator;
-import javafx.scene.control.Skin;
-import org.dockfx.DockNode;
-import org.dockfx.DockPos;
-
 import java.util.List;
 import java.util.Stack;
-
 import java.util.stream.Collectors;
+
+import org.dockfx.dock.DockNode;
+import org.dockfx.dock.DockPos;
+import org.dockfx.pane.skin.ContentTabPaneSkin;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Skin;
 import javafx.scene.control.TabPane;
-import org.dockfx.pane.skin.ContentTabPaneSkin;
 
 /**
  * ContentTabPane holds multiple tabs

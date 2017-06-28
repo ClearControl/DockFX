@@ -22,7 +22,9 @@
 package org.dockfx.demo;
 
 
-import org.dockfx.DockPane;
+import org.dockfx.dock.DockNode;
+import org.dockfx.dock.DockPane;
+import org.dockfx.dock.DockPos;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -35,8 +37,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.dockfx.DockNode;
-import org.dockfx.DockPos;
 
 /**
  * This app creates two dock panes, one over the other. Nodes can be added to either.
@@ -60,7 +60,6 @@ public class TwoDockPanes extends Application {
   private final Image dockImage = 
     new Image(DockFX.class.getResource("docknode.png").toExternalForm());
 
-  @SuppressWarnings("unchecked")
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle("DockFX");
@@ -79,7 +78,6 @@ public class TwoDockPanes extends Application {
 
     // test the look and feel with both Caspian and Modena
     Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
-    DockPane.initializeDefaultUserAgentStylesheet();
   }
 
   private DockPane makeDockPane(String name) {
@@ -101,12 +99,12 @@ public class TwoDockPanes extends Application {
   }
 
   private void addNode(DockPane dp, String dockName) {
-    int n = ++counter;
+    ++counter;
     String title = dockName + "Node " + counter;
     TextArea ta = new TextArea();
     ta.setText(title + "\n\nJust some test data"); 
     DockNode dn = new DockNode(ta, title, new ImageView(dockImage));
-    dn.dock(dp, DockPos.BOTTOM);
+    dp.dock(dn, DockPos.BOTTOM);
   }
 
 

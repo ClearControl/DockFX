@@ -1,9 +1,9 @@
 package org.dockfx.pane;
 
-import org.dockfx.DockPos;
-
 import java.util.List;
 import java.util.Stack;
+
+import org.dockfx.dock.DockPos;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
