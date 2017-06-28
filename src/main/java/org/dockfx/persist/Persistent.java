@@ -1,13 +1,15 @@
 package org.dockfx.persist;
 
-import org.dockfx.dock.DockNode;
+import java.util.List;
+import org.dockfx.dock.DockPane;
 
-import javafx.collections.ObservableList;
+import javafx.stage.Stage;
+
 
 /**
- * Created by jding on 16/06/2017.
+ * Created by jiang ding on 16/06/2017.
  */
 public interface Persistent {
-  void load(String filePath) throws PersistanceException;
-  void save(ObservableList<DockNode> allNodes, String filePath) throws  PersistanceException;
+  DockPane load(String filePath) throws PersistanceException;
+  void save(Stage primaryStage, String filePath) throws  PersistanceException;
 }

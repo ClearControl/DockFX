@@ -14,13 +14,16 @@ import javafx.stage.Window;
  */
 public class UiUtil {
 
-  public static Node searchNode(String className, Parent root) {
+  public static Node searchNode(Class<?> clazz, Parent root) {
+    if(clazz.isAssignableFrom(root.getClass())) {
+      return root;
+    }
     List<Node> children = root.getChildrenUnmodifiable();
     for(Node node:children){
-      if(className.equals(node.getClass().getCanonicalName())){
+      if(clazz.isAssignableFrom(node.getClass())){
         return node;
       }else if(node instanceof Parent){
-        Node underChildren = searchNode(className, (Parent)node);
+        Node underChildren = searchNode(clazz, (Parent)node);
         if(underChildren!=null) return underChildren;
       }
     }

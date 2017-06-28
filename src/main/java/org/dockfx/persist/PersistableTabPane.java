@@ -3,8 +3,10 @@ package org.dockfx.persist;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.*;
 import org.dockfx.UiUtil;
-import org.dockfx.pane.ContentTabPane;
+import org.dockfx.dock.DockPos;
+import org.dockfx.pane.*;
 
 /**
  * Created by jding on 14/06/2017.
@@ -15,16 +17,25 @@ public class PersistableTabPane implements Persistable<ContentTabPane> {
   List<Persistable<?>> children = new ArrayList<>(10);
   
   @Override
-  public ContentTabPane reconstruct() {
-    ContentTabPane tabPane = new ContentTabPane();
-//    for(Persistable<?> child : tabPane.getChildrenUnmodifiable()){
-//    }
-    return tabPane;
+  public ContentTabPane reconstruct(Parent parentPane) {
+    if (parentPane instanceof ContentSplitPane) {
+      ContentSplitPane pane = (ContentSplitPane) parentPane;
+      ContentTabPane tabPane = new ContentTabPane();
+      tabPane.setContentParent(pane);
+      pane.getItems().add(tabPane);
+      for(Persistable<?> child:children){
+        tabPane.addNode(null,null,(Node)child.reconstruct(tabPane), DockPos.LEFT);
+      }
+      return tabPane;
+    }else{
+      return null;
+    }
   }
 
   @Override
-  public void persist(ContentTabPane tabPane) {
+  public PersistableTabPane persist(ContentTabPane tabPane) {
     position = UiUtil.getRec(tabPane);
+    return this;
   }
 
   public Rec getPosition() {

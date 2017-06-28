@@ -294,7 +294,7 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
 	 */
 	private void initializeDockNode(Node contents, String title, Node graphic, DockFXViewController controller) {
 		if(Strings.isNullOrEmpty(title))
-			title = "Ttile";
+			title = "Title";
 
 		this.titleProperty.setValue(title);
 		this.graphicProperty.setValue(graphic);
@@ -311,17 +311,6 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
 		VBox.setVgrow(contents, Priority.ALWAYS);
 
 		this.getStyleClass().add("dock-node");
-	}
-
-	/**
-	 * The stage style that will be used when the dock node is floating. This must
-	 * be set prior to setting the dock node to floating.
-	 * 
-	 * @param stageStyle
-	 *            The stage style that will be used when the node is floating.
-	 */
-	public void setStageStyle(StageStyle stageStyle) {
-		this.stageStyle = stageStyle;
 	}
 
 	/**
@@ -1077,5 +1066,9 @@ public class DockNode extends VBox implements EventHandler<MouseEvent> {
 				event.consume();
 			}
 		}
+	}
+
+	public void setDockPane(DockPane dockPane) {
+		this.dockPane = dockPane;
 	}
 }

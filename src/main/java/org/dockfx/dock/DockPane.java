@@ -21,6 +21,7 @@
 package org.dockfx.dock;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -28,7 +29,6 @@ import org.dockfx.pane.ContentPane;
 import org.dockfx.pane.ContentSplitPane;
 import org.dockfx.pane.ContentTabPane;
 import org.dockfx.pane.DockNodeTab;
-import org.dockfx.persist.Persistable;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -50,6 +50,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -60,7 +61,7 @@ import javafx.util.Duration;
  *
  * @since DockFX 0.1
  */
-public class DockPane extends StackPane implements EventHandler<DockEvent>,Persistable<DockPane> {
+public class DockPane extends StackPane implements EventHandler<DockEvent>{
 
 	/**
 	 * The current root node of this dock pane's layout.
@@ -121,6 +122,10 @@ public class DockPane extends StackPane implements EventHandler<DockEvent>,Persi
 	 * indicator buttons to be displayed outside the window of this dock pane.
 	 */
 	private Popup dockIndicatorPopup;
+	
+	private Stage stage;
+	
+	private final List<DockNode> allNodes = new LinkedList<>();
 
 	/**
 	 * A collection used to manage the indicator buttons and automate hit detection
@@ -288,40 +293,6 @@ public class DockPane extends StackPane implements EventHandler<DockEvent>,Persi
 	private ObservableMap<Node, DockNodeEventHandler> dockNodeEventFilters = FXCollections.observableHashMap();
 
 	/**
-	 * A wrapper to the type parameterized generic EventHandler that allows us to
-	 * remove it from its listener when the dock node becomes detached. It is
-	 * specifically used to monitor which dock node in this dock pane's layout we
-	 * are currently dragging over.
-	 *
-	 * @since DockFX 0.1
-	 */
-	private class DockNodeEventHandler implements EventHandler<DockEvent> {
-
-		/**
-		 * The node associated with this event handler that reports to the encapsulating
-		 * dock pane.
-		 */
-		private final Node node;
-
-		/**
-		 * Creates a default dock node event handler that will help this dock pane track
-		 * the current docking area.
-		 *
-		 * @param node
-		 *            The node that is to listen for docking events and report to the
-		 *            encapsulating docking pane.
-		 */
-		public DockNodeEventHandler(Node node) {
-			this.node = node;
-		}
-
-		@Override
-		public void handle(DockEvent event) {
-			DockPane.this.dockNodeDrag = node;
-		}
-	}
-
-	/**
 	 * Dock the node into this dock pane at the given docking position relative to
 	 * the sibling in the layout. This is used to relatively position the dock nodes
 	 * to other nodes given their preferred size.
@@ -334,8 +305,11 @@ public class DockPane extends StackPane implements EventHandler<DockEvent>,Persi
 	 *            The sibling of this node in the layout.
 	 */
 	void dock(DockNode node, DockPos dockPos, Node sibling) {
+		if(!allNodes.contains(node)){
+			allNodes.add(node);
+		}
 		node.dockImpl(this, dockPos, sibling);
-		DockNodeEventHandler dockNodeEventHandler = new DockNodeEventHandler(node);
+		DockNodeEventHandler dockNodeEventHandler = new DockNodeEventHandler(this, node);
 		dockNodeEventFilters.put(node, dockNodeEventHandler);
 		node.addEventFilter(DockEvent.DOCK_OVER, dockNodeEventHandler);
 
@@ -478,6 +452,12 @@ public class DockPane extends StackPane implements EventHandler<DockEvent>,Persi
 		}
 	}
 
+	
+	
+	public void dock(Node node, DockPos dockPos,String title) {
+		DockNode dockNode = new DockNode(node,title,null);
+		dock(dockNode,dockPos);
+	}
 	/**
 	 * Dock the node into this dock pane at the given docking position relative to
 	 * the root in the layout. This is used to relatively position the dock nodes to
@@ -663,22 +643,19 @@ public class DockPane extends StackPane implements EventHandler<DockEvent>,Persi
 		}
 	}
 
-	public void loadPreference(String filePath) {
+	public List<DockNode> getAllNodes() {
+		return allNodes;
 	}
 
-	public void storePreference(String filePath) {
+	void setDockNodeDrag(Node node){
+		dockNodeDrag = node;
 	}
 
-	
-	@Override
-	public DockPane reconstruct() {
-		// TODO Auto-generated method stub
-		return null;
+	public void addDockNodeEventFilter(DockNode dockNode,DockNodeEventHandler handler){
+		dockNodeEventFilters.put(dockNode,handler);
 	}
 
-	@Override
-	public void persist(DockPane t) {		
-		
+	public void setRoot(Node root){
+		this.root = root;
 	}
-
 }

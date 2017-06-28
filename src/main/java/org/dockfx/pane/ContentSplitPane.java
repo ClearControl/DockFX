@@ -1,8 +1,6 @@
 package org.dockfx.pane;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 import org.dockfx.dock.DockNode;
 import org.dockfx.dock.DockPos;
@@ -12,6 +10,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.SplitPane;
+import org.dockfx.persist.Persistable;
 
 /**
  * ContentSplitPane contains multiple SplitPane
@@ -24,7 +23,7 @@ public class ContentSplitPane extends SplitPane implements ContentPane {
   /**
    * The Parent.
    */
-  ContentPane parent;
+  transient ContentPane parent;
 
   public Type getType() {
     return Type.SplitPane;

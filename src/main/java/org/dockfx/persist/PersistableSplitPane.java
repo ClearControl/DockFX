@@ -3,12 +3,12 @@ package org.dockfx.persist;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.*;
 import org.dockfx.UiUtil;
-import org.dockfx.dock.DockPos;
-import org.dockfx.pane.ContentSplitPane;
+import org.dockfx.dock.*;
+import org.dockfx.pane.*;
 
 import javafx.geometry.Orientation;
-import javafx.scene.Node;
 
 /**
  * Created by jding on 14/06/2017.
@@ -21,25 +21,31 @@ public class PersistableSplitPane implements Persistable<ContentSplitPane> {
   List<Persistable<?>> children = new ArrayList<>(10);
 
   @Override
-  public ContentSplitPane reconstruct() {
+  public ContentSplitPane reconstruct(Parent parentPane) {
     ContentSplitPane splitPane = new ContentSplitPane();
     splitPane.setOrientation(orientation);
+    if (parentPane instanceof ContentSplitPane) {
+      ContentSplitPane pane = (ContentSplitPane) parentPane;
+      splitPane.setContentParent(pane);
+      pane.getItems().add(splitPane);
+    }else{
+      DockPane pane = (DockPane)parentPane;
+      pane.setRoot( splitPane);
+      pane.getChildren().setAll(splitPane);
+    }
     for(Persistable<?> child : children){
-      Node childNode = (Node)child.reconstruct();
-      splitPane.addNode(null,null,childNode, (orientation.equals(Orientation.HORIZONTAL) ? DockPos.LEFT : DockPos.BOTTOM));
+      child.reconstruct(splitPane);
     }
-
-    for(int i = 0;i<spliterPostion.length; i++){
-      splitPane.setDividerPosition(i,spliterPostion[i]);
-    }
+    splitPane.setDividerPositions(spliterPostion);
     return splitPane;
   }
 
   @Override
-  public void persist(ContentSplitPane splitPane) {
+  public PersistableSplitPane persist(ContentSplitPane splitPane) {
     orientation = splitPane.getOrientation();
     spliterPostion = splitPane.getDividerPositions();
     position = UiUtil.getRec(splitPane);
+    return this;
   }
 
   public double[] getSpliterPostion() {

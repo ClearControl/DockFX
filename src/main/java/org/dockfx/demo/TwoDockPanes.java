@@ -60,7 +60,6 @@ public class TwoDockPanes extends Application {
   private final Image dockImage = 
     new Image(DockFX.class.getResource("docknode.png").toExternalForm());
 
-  @SuppressWarnings("unchecked")
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle("DockFX");
@@ -100,7 +99,7 @@ public class TwoDockPanes extends Application {
   }
 
   private void addNode(DockPane dp, String dockName) {
-    int n = ++counter;
+    ++counter;
     String title = dockName + "Node " + counter;
     TextArea ta = new TextArea();
     ta.setText(title + "\n\nJust some test data"); 
