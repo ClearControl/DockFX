@@ -119,7 +119,9 @@ public class ContentSplitPane extends SplitPane implements ContentPane {
   }
 
   public void set(int idx, Node node) {
+    double[] divPos = getDividerPositions();
     getItems().set(idx, node);
+    setDividerPositions(divPos);
   }
 
   public void set(Node sibling, Node node) {
