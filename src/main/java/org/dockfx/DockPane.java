@@ -667,6 +667,12 @@ public class DockPane extends StackPane
    */
   void undock(DockNode node)
   {
+    if (!dockNodeEventFilters.containsKey(node))
+    {
+      // NullPointerException will be thrown later if it is not checked here.
+      // It could happen when the dockNode is being undocked from second time onward
+      return;
+    }
     if (!node.closedProperty().get())
       undockedNodes.add(node);
 
