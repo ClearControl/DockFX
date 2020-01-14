@@ -1131,12 +1131,12 @@ public class DockPane extends StackPane
     // screen
 	Rectangle2D screen = Screen.getPrimary().getBounds();
 
-    if (windowPosition[0] > screen.getMaxX())
+    if (windowPosition[0] > screen.getMaxX() || windowPosition[0] < screen.getMinX())
     {
       windowPosition[0] = currentStage.getX();
     }
 
-    if (windowPosition[1] > screen.getMaxY())
+    if (windowPosition[1] > screen.getMaxY() || windowPosition[1] < screen.getMinY())
     {
       windowPosition[1] = currentStage.getY();
     }
